@@ -1,3 +1,6 @@
+Major Project : Under development
+
+```bash
 astra
 │
 ├── backend/                   # Flask REST API
@@ -17,3 +20,4 @@ astra
 ├── README.md                  # Project overview & instructions
 ├── .gitignore
 
+```
