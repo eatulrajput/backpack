@@ -6,3 +6,10 @@ marshmallow
 flask_pymongo
 flask_jwt_extended
 werkzeug
+langchain
+langchain_community
+langchain-text-splitters
+langchain-chroma
+pypdf
+sentence-transformers
+langchain-huggingface

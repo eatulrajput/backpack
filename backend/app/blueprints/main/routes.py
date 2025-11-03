@@ -1,8 +1,10 @@
-from flask import Blueprint, jsonify
+from . import main_bp
+from flask import Blueprint, jsonify, request
 from app.services.rag import get_context
 from app.services.llm_service import ask_llm
 
-@app.route('/some-endpoint', methods=['POST'])
+
+@main_bp.route('/some-endpoint', methods=['POST'])
 def handle_question():
     data = request.get_json()
     question = data.get('question')
@@ -10,7 +12,7 @@ def handle_question():
     # Use context for further processing or response
 
 
-@app.route('/chat', methods=['POST'])
+@main_bp.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
     question = data.get('question')

@@ -4,17 +4,11 @@ from . import auth_bp
 from flask import request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token,create_refresh_token, jwt_required, get_jwt_identity
-from app.extensions import mongo
 from app.services.auth_utils import role_required
 from marshmallow import ValidationError
 from app.schemas.auth import RegisterSchema
 from app.services.db_error_handler import catch_db_errors
 import datetime
-
-
-
-# Example user collection setup
-users_col = mongo.db.users
 
 register_schema = RegisterSchema()
 
@@ -26,6 +20,8 @@ VALID_ROLES = {"student", "faculty", "admin"}
 @auth_bp.route('/register', methods=['POST'])
 @catch_db_errors
 def register():
+    from app.extensions import mongo
+    users_col = mongo.db.users
     data = request.get_json()
     try:
         data = register_schema.load(data)
@@ -58,6 +54,8 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 @catch_db_errors
 def login():
+    from app.extensions import mongo
+    users_col = mongo.db.users
     data = request.get_json()
     username = data.get('username', '').lower()
     password = data.get('password')
@@ -83,6 +81,8 @@ def login():
 @catch_db_errors
 @jwt_required(refresh=True)
 def refresh():
+    from app.extensions import mongo
+    users_col = mongo.db.users
     current_user_id = get_jwt_identity()
     user = users_col.find_one({"_id": mongo.db.ObjectId(current_user_id)})
     if not user:
@@ -100,6 +100,8 @@ def refresh():
 @catch_db_errors
 @jwt_required()
 def profile():
+    from app.extensions import mongo
+    users_col = mongo.db.users
     current_user_id = get_jwt_identity()
     user = users_col.find_one({"_id": mongo.db.ObjectId(current_user_id)}, {"password": 0})
     if not user:
